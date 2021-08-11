@@ -56,6 +56,10 @@ public class IntList {
         return;
     }
 
+    /**
+     * Helper method for addAdjacent to check if the current list
+     * contains any duplicates
+     */
     private boolean isDuplicate() {
         IntList a = this;
         while (a.rest != null) {
@@ -76,6 +80,32 @@ public class IntList {
             L.first = L.first * L.first;
             L = L.rest;
         }
+    }
+
+    /**
+     * Every time you add a value you “square” the IntList.
+     */
+    public void addSquare(int x) {
+        IntList curr = this;
+        while (curr != null) {
+            int squaredValue = curr.first * curr.first;
+            curr.rest = new IntList(squaredValue, curr.rest);
+            curr = curr.rest.rest;
+        }
+        addLast(x);
+
+    }
+
+    /**
+     * Helper method for addSquare to just add the item to the last of the IntList.
+     * This is needed as the pointer will right pass the last item and go to null.
+     */
+    private void addLast(int x) {
+        IntList curr = this;
+        while (curr.rest != null) {
+            curr = curr.rest;
+        }
+        curr.rest = new IntList(x, null);
     }
 
     /**

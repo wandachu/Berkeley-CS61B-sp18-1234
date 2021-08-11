@@ -66,4 +66,22 @@ public class IntListTest {
         assertEquals(IntList.of(1, 2, 3), A);
     }
 
+    @Test
+    public void testAddAdjacent() {
+        IntList A = IntList.of(1, 1, 2, 3);
+        A.addAdjacent();
+        assertEquals(IntList.of(4, 3), A);
+        IntList B = IntList.of(1, 1, 2, 2, 3);
+        B.addAdjacent();
+        assertEquals(IntList.of(4, 2, 3), B);
+    }
+
+    @Test
+    public void testAddSquare() {
+        IntList A = IntList.of(1, 2);
+        A.addSquare(5);
+        assertEquals(IntList.of(1, 1, 2, 4, 5), A);
+        A.addSquare(7);
+        assertEquals(IntList.of(1, 1, 1, 1, 2, 4, 4, 16, 5, 25, 7), A);
+    }
 }

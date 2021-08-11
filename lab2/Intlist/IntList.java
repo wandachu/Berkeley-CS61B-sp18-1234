@@ -34,6 +34,40 @@ public class IntList {
     }
 
     /**
+     * If 2 numbers in a row are the same, we add them together and
+     * make one large node
+     */
+    public void addAdjacent() {
+        IntList curr1 = this;
+        IntList curr2 = this.rest;
+        while (curr2 != null) {
+            if (curr1.first == curr2.first) {
+                curr1.first = curr1.first * 2;
+                curr1.rest = curr2.rest;
+                curr2 = curr1.rest;
+                if (!isDuplicate()) {
+                    return;
+                }
+            } else {
+                curr1 = curr1.rest;
+                curr2 = curr1.rest;
+            }
+        }
+        return;
+    }
+
+    private boolean isDuplicate() {
+        IntList a = this;
+        while (a.rest != null) {
+            if (a.first == a.rest.first) {
+                return true;
+            }
+            a = a.rest;
+        }
+        return false;
+    }
+
+    /**
      * Returns a list equal to L with all elements squared. Destructive.
      */
     public static void dSquareList(IntList L) {

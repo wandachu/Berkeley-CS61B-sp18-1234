@@ -12,22 +12,17 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public LLNode sentinel;
+    private LLNode sentinel;
     private int size;
 
     /**
      * Creates an empty LinkedListDeque.
      */
-    public LinkedListDeque () {
+    public LinkedListDeque() {
         sentinel = new LLNode(null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
         size = 0;
-    }
-
-    public LinkedListDeque(T item) {
-        this();
-        addFirst(item);
     }
 
     /**

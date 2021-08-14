@@ -1,5 +1,3 @@
-import org.junit.Test;
-
 /** Performs some basic ArrayDeque tests. */
 public class ArrayDequeTest {
 
@@ -95,33 +93,42 @@ public class ArrayDequeTest {
 
     }
 
-    /** Adds a few items, then get the first item, the invalid index item, a middle item, and the last item,
+    /** Adds a few items, then get the first item, the invalid index item,
+     * a middle item, and the last item,
      * using both recursive and iterative method.
      */
     public static void getItemTest() {
         System.out.println("Running getItem test.");
-        ArrayDeque<String> ad1 = new ArrayDeque<>();
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
         // should be empty
         boolean passed = checkEmpty(true, ad1.isEmpty());
 
-        ad1.addFirst("third");
-        // should not be empty
-        passed = checkEmpty(false, ad1.isEmpty()) && passed;
-
-        ad1.addFirst("second");
-        ad1.addFirst("first");
-        ad1.addLast("last");
+        ad1.addFirst(0);
+        ad1.removeFirst();
+        ad1.addLast(2);
+        ad1.addFirst(3);
+        ad1.addFirst(4);
+        ad1.addLast(5);
+        ad1.removeFirst();
+        passed = (ad1.get(2) == 5) && passed;
+        ad1.addFirst(8);
+        passed = (ad1.get(2) == 2) && passed;
+        ad1.addFirst(10);
+        ad1.removeFirst();
+        ad1.addFirst(12);
+        ad1.addLast(13);
+        ad1.addFirst(14);
+        passed = (ad1.get(6) == 13) && passed;
+        ad1.addLast(16);
+        ad1.removeLast();
+        ad1.removeLast();
+        ad1.removeFirst();
+        ad1.removeFirst();
+        ad1.removeLast();
+        ad1.removeFirst();
         ad1.printDeque();
 
-        passed = (ad1.get(0).equals("first")) && passed;
-        passed = (ad1.get(-1) == null) && passed;
-        passed = (ad1.get(1).equals("second")) && passed;
-        passed = (ad1.get(ad1.size() - 1).equals("last")) && passed;
-
-        passed = (ad1.get(0).equals("first")) && passed;
-        passed = (ad1.get(-1) == null) && passed;
-        passed = (ad1.get(1).equals("second")) && passed;
-        passed = (ad1.get(ad1.size() - 1).equals("last")) && passed;
+        passed = (ad1.get(1) == 2) && passed;
 
         printTestStatus(passed);
     }
@@ -182,8 +189,8 @@ public class ArrayDequeTest {
 
     public static void main(String[] args) {
         System.out.println("Running tests.\n");
-		addIsEmptySizeTest();
-		addRemoveTest();
+        addIsEmptySizeTest();
+        addRemoveTest();
         getItemTest();
         resizingAddTest();
         resizingRemovelTest();

@@ -64,7 +64,7 @@ public class ArrayDeque<T> {
         }
         for (int i = 0; i < size; i++) {
             a[i] = items[index];
-            if (index == c / RFACTOR - 1) {
+            if (index == capacity - 1) {
                 index = 0;
             } else {
                 index++;

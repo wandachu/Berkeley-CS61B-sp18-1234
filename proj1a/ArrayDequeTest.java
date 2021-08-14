@@ -46,6 +46,20 @@ public class ArrayDequeTest {
         ad1.addLast("back");
         passed = checkSize(3, ad1.size()) && passed;
 
+        ad1.addLast("back1");
+        passed = checkSize(4, ad1.size()) && passed;
+
+        ad1.addLast("back2");
+        passed = checkSize(5, ad1.size()) && passed;
+
+        ad1.addLast("back3");
+        passed = checkSize(6, ad1.size()) && passed;
+
+        ad1.addFirst("front-front");
+        passed = checkSize(7, ad1.size()) && passed;
+
+        String s = ad1.get(1);
+        System.out.println(s);
         System.out.println("Printing out deque: ");
         ad1.printDeque();
 
@@ -123,11 +137,56 @@ public class ArrayDequeTest {
         }
     }
 
+    public static void resizingAddTest() {
+        System.out.println("Running adding with resizing test.");
+
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        ad1.addFirst(1);
+        ad1.addFirst(2);
+        ad1.addLast(100);
+        ad1.addLast(101);
+        ad1.addLast(102);
+        ad1.addLast(103);
+        ad1.addLast(104);
+        System.out.println("Next item will result in resizing");
+        ad1.addFirst(3);
+        ad1.addFirst(4);
+        ad1.addLast(105);
+        ad1.addLast(106);
+
+        System.out.println("size should be 11. It's actually " + ad1.size());
+        System.out.println("Printing out deque: ");
+        ad1.printDeque();
+
+    }
+
+    public static void resizingRemovelTest() {
+        System.out.println("Running removing with resizing test.");
+
+        ArrayDeque<Integer> ad1 = new ArrayDeque<>();
+        boolean passed = checkEmpty(true, ad1.isEmpty());
+        for (int i = 0; i < 100; i++) {
+            ad1.addLast(1);
+        }
+        System.out.println("Complete adding");
+        passed = (ad1.size() == 100) && passed;
+        for (int i = 0; i < 90; i++) {
+            ad1.removeLast();
+        }
+        System.out.println("Complete removing");
+        passed = (ad1.size() == 10) && passed;
+
+        ad1.printDeque();
+        printTestStatus(passed);
+    }
+
     public static void main(String[] args) {
         System.out.println("Running tests.\n");
 		addIsEmptySizeTest();
 		addRemoveTest();
         getItemTest();
+        resizingAddTest();
+        resizingRemovelTest();
     }
 
 }

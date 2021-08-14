@@ -22,12 +22,12 @@ public class ArrayDeque<T> {
      */
     public void addFirst(T item) {
         if (size == capacity - 1) { //start resizing one item earlier
-            capacity *= 2;
-            resize(capacity);
+            resize(capacity * RFACTOR);
+            capacity *= RFACTOR;
         }
-        size++;
         items[nextFirst] = item;
         updateNextFirst();
+        size++;
     }
 
     /**
@@ -55,9 +55,23 @@ public class ArrayDeque<T> {
     /**
      * Resizes the item array if the array is full.
      */
-    private void resize(int capacity) {
-        T[] a = (T[]) new Object[capacity];
-        System.arraycopy(items, 0, a ,0, size);
+    private void resize(int c) {
+        T[] a = (T[]) new Object[c];
+
+        int index = nextFirst + 1;
+        if (index == capacity) {
+            index = 0;
+        }
+        for (int i = 0; i < size; i++) {
+            a[i] = items[index];
+            if (index == c / RFACTOR - 1) {
+                index = 0;
+            } else {
+                index++;
+            }
+        } //when the for loop is over, index is at the empty place that NL should go.
+        nextFirst = c - 1;
+        nextLast = size;
         items = a;
     }
 
@@ -67,12 +81,12 @@ public class ArrayDeque<T> {
      */
     public void addLast(T item) {
         if (size == capacity - 1) { //start resizing one item earlier
-            capacity *= 2;
-            resize(capacity);
+            resize(capacity * RFACTOR);
+            capacity *= RFACTOR;
         }
-        size++;
         items[nextLast] = item;
         updateNextLast();
+        size++;
     }
 
     /**
@@ -93,10 +107,25 @@ public class ArrayDeque<T> {
      * Prints the item in the deque from first to last, separated by a space.
      */
     public void printDeque() {
-        for (int i = nextFirst + 1; i < nextFirst + size; i++) {
-            System.out.print(items[i] + " ");
+        int count = size;
+        int i = nextFirst + 1;
+        if (i == capacity) {
+            i = 0;
         }
-        System.out.println(items[nextFirst + size]);
+        while (count > 0) {
+            if (count == 0) {
+                System.out.print(items[i]);
+                break;
+            }
+            System.out.print(items[i] + " ");
+            if (i == capacity - 1) {
+                i = 0;
+            } else {
+                i++;
+            }
+            count--;
+        }
+        System.out.println();
     }
 
     /**
@@ -107,10 +136,6 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        if (size / (double) capacity < RESIZERATIO) {
-            capacity *= RFACTOR;
-            resize(capacity);
-        }
         if (nextFirst == capacity - 1) {
             nextFirst = 0;
         } else {
@@ -119,6 +144,12 @@ public class ArrayDeque<T> {
         T res = items[nextFirst];
         items[nextFirst] = null;
         size--;
+        if (size != 0) {
+            if (size / (double) capacity < RESIZERATIO) {
+                resize(size * RFACTOR);
+                capacity = size * RFACTOR;
+            }
+        }
         return res;
     }
 
@@ -130,10 +161,6 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        if (size / (double) capacity < RESIZERATIO) {
-            capacity *= RFACTOR;
-            resize(capacity);
-        }
         if (nextLast == 0) {
             nextLast = capacity - 1;
         } else {
@@ -142,6 +169,12 @@ public class ArrayDeque<T> {
         T res = items[nextLast];
         items[nextLast] = null;
         size--;
+        if (size != 0) {
+            if (size / (double) capacity < RESIZERATIO) {
+                resize(size * RFACTOR);
+                capacity = size * RFACTOR;
+            }
+        }
         return res;
     }
 

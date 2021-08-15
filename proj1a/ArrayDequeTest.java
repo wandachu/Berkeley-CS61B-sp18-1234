@@ -32,8 +32,6 @@ public class ArrayDequeTest {
 
         ad1.addFirst("front");
 
-        // The && operator is the same as "and" in Python.
-        // It's a binary operator that returns true if both arguments true, and false otherwise.
         passed = checkSize(1, ad1.size()) && passed;
         passed = checkEmpty(false, ad1.isEmpty()) && passed;
 
@@ -57,7 +55,7 @@ public class ArrayDequeTest {
         passed = checkSize(7, ad1.size()) && passed;
 
         String s = ad1.get(1);
-        System.out.println(s);
+        System.out.println("the number 1st item is: " + s);
         System.out.println("Printing out deque: ");
         ad1.printDeque();
 
@@ -134,8 +132,7 @@ public class ArrayDequeTest {
     }
 
 
-    /* Prints a nice message based on whether a test passed.
-     * The \n means newline. */
+    /* Prints a nice message based on whether a test passed.*/
     public static void printTestStatus(boolean passed) {
         if (passed) {
             System.out.println("Test passed!\n");
@@ -167,7 +164,7 @@ public class ArrayDequeTest {
 
     }
 
-    public static void resizingRemovelTest() {
+    public static void resizingRemoveTest() {
         System.out.println("Running removing with resizing test.");
 
         ArrayDeque<Integer> ad1 = new ArrayDeque<>();
@@ -193,7 +190,7 @@ public class ArrayDequeTest {
         addRemoveTest();
         getItemTest();
         resizingAddTest();
-        resizingRemovelTest();
+        resizingRemoveTest();
     }
 
 }

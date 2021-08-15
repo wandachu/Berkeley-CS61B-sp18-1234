@@ -23,58 +23,11 @@ public class ArrayDeque<T> {
     public void addFirst(T item) {
         if (size == capacity - 1) { //start resizing one item earlier
             resize(capacity * RFACTOR);
-            capacity *= RFACTOR;
         }
         items[nextFirst] = item;
-        updateNextFirst();
+        nextFirst = Math.floorMod(nextFirst - 1 + capacity, capacity);
         size++;
     }
-
-    /**
-     * Updates the nextFirst pointer.
-     */
-    private void updateNextFirst() {
-        if (nextFirst == 0) {
-            nextFirst = capacity - 1; //no need to resize since we already consider that
-        } else {
-            nextFirst--;
-        }
-    }
-
-    /**
-     * Updates the nextLast pointer.
-     */
-    private void updateNextLast() {
-        if (nextLast == capacity - 1) {
-            nextLast = 0; //no need to resize since we already consider that
-        } else {
-            nextLast++;
-        }
-    }
-
-    /**
-     * Resizes the item array if the array is full.
-     */
-    private void resize(int c) {
-        T[] a = (T[]) new Object[c];
-
-        int index = nextFirst + 1;
-        if (index == capacity) {
-            index = 0;
-        }
-        for (int i = 0; i < size; i++) {
-            a[i] = items[index];
-            if (index == capacity - 1) {
-                index = 0;
-            } else {
-                index++;
-            }
-        } //when the for loop is over, index is at the empty place that NL should go.
-        nextFirst = c - 1;
-        nextLast = size;
-        items = a;
-    }
-
 
     /**
      * Adds an item of type T to the back of the deque.
@@ -82,10 +35,9 @@ public class ArrayDeque<T> {
     public void addLast(T item) {
         if (size == capacity - 1) { //start resizing one item earlier
             resize(capacity * RFACTOR);
-            capacity *= RFACTOR;
         }
         items[nextLast] = item;
-        updateNextLast();
+        nextLast = Math.floorMod(nextLast + 1 + capacity, capacity);
         size++;
     }
 
@@ -108,21 +60,10 @@ public class ArrayDeque<T> {
      */
     public void printDeque() {
         int count = size;
-        int i = nextFirst + 1;
-        if (i == capacity) {
-            i = 0;
-        }
+        int i = Math.floorMod(nextFirst + 1 + capacity, capacity);
         while (count > 0) {
-            if (count == 0) {
-                System.out.print(items[i]);
-                break;
-            }
             System.out.print(items[i] + " ");
-            if (i == capacity - 1) {
-                i = 0;
-            } else {
-                i++;
-            }
+            i = Math.floorMod(i + 1 + capacity, capacity);
             count--;
         }
         System.out.println();
@@ -136,19 +77,12 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        if (nextFirst == capacity - 1) {
-            nextFirst = 0;
-        } else {
-            nextFirst++;
-        }
+        nextFirst = Math.floorMod(nextFirst + 1 + capacity, capacity);
         T res = items[nextFirst];
         items[nextFirst] = null;
         size--;
-        if (size != 0) {
-            if (size / (double) capacity < RESIZERATIO) {
-                resize(size * RFACTOR);
-                capacity = size * RFACTOR;
-            }
+        if (size >= 8 && (size / (double) capacity < RESIZERATIO)) {
+            resize(size * RFACTOR);
         }
         return res;
     }
@@ -161,19 +95,12 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        if (nextLast == 0) {
-            nextLast = capacity - 1;
-        } else {
-            nextLast--;
-        }
+        nextLast = Math.floorMod(nextLast - 1 + capacity, capacity);
         T res = items[nextLast];
         items[nextLast] = null;
         size--;
-        if (size != 0) {
-            if (size / (double) capacity < RESIZERATIO) {
-                resize(size * RFACTOR);
-                capacity = size * RFACTOR;
-            }
+        if (size >= 8 && (size / (double) capacity < RESIZERATIO)) {
+            resize(size * RFACTOR);
         }
         return res;
     }
@@ -188,14 +115,26 @@ public class ArrayDeque<T> {
         }
         int p = nextFirst;
         while (index >= 0) {
-            if (p == capacity - 1) {
-                p = 0;
-            } else {
-                p++;
-            }
+            p = Math.floorMod(p + 1 + capacity, capacity);
             index--;
         }
         return items[p];
+    }
+
+    /**
+     * Resizes the item array if the array is almost full.
+     */
+    private void resize(int newSize) {
+        T[] a = (T[]) new Object[newSize];
+        int index = Math.floorMod(nextFirst + 1 + capacity, capacity);
+        for (int i = 0; i < size; i++) {
+            a[i] = items[index];
+            index = Math.floorMod(index + 1 + capacity, capacity);
+        } //when the loop is over, index is at the empty place that NextLast goes.
+        nextFirst = newSize - 1;
+        nextLast = size;
+        items = a;
+        capacity = newSize;
     }
 
 }

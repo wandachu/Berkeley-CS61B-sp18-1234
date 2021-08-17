@@ -25,7 +25,7 @@ public class ArrayDeque<T> {
             resize(capacity * RFACTOR);
         }
         items[nextFirst] = item;
-        nextFirst = Math.floorMod(nextFirst - 1 + capacity, capacity);
+        nextFirst = (nextFirst - 1 + capacity) % capacity; //can use floorMod(NF - 1, capacity)
         size++;
     }
 
@@ -37,7 +37,7 @@ public class ArrayDeque<T> {
             resize(capacity * RFACTOR);
         }
         items[nextLast] = item;
-        nextLast = (nextLast + 1 + capacity) % capacity;
+        nextLast = (nextLast + 1) % capacity;
         size++;
     }
 
@@ -60,10 +60,10 @@ public class ArrayDeque<T> {
      */
     public void printDeque() {
         int count = size;
-        int i = (nextFirst + 1 + capacity) % capacity;
+        int i = (nextFirst + 1) % capacity;
         while (count > 0) {
             System.out.print(items[i] + " ");
-            i = (i + 1 + capacity) % capacity;
+            i = (i + 1) % capacity;
             count--;
         }
         System.out.println();
@@ -77,7 +77,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        nextFirst = (nextFirst + 1 + capacity) % capacity;
+        nextFirst = (nextFirst + 1) % capacity;
         T res = items[nextFirst];
         items[nextFirst] = null;
         size--;
@@ -95,7 +95,7 @@ public class ArrayDeque<T> {
         if (size == 0) {
             return null;
         }
-        nextLast = Math.floorMod(nextLast - 1 + capacity, capacity);
+        nextLast = (nextLast - 1 + capacity) % capacity; //can use floorMod(NF - 1, capacity)
         T res = items[nextLast];
         items[nextLast] = null;
         size--;
@@ -115,7 +115,7 @@ public class ArrayDeque<T> {
         }
         int p = nextFirst;
         while (index >= 0) {
-            p = (p + 1 + capacity) % capacity;
+            p = (p + 1) % capacity;
             index--;
         }
         return items[p];
@@ -126,10 +126,10 @@ public class ArrayDeque<T> {
      */
     private void resize(int newSize) {
         T[] a = (T[]) new Object[newSize];
-        int index = (nextFirst + 1 + capacity) % capacity;
+        int index = (nextFirst + 1) % capacity;
         for (int i = 0; i < size; i++) {
             a[i] = items[index];
-            index = (index + 1 + capacity) % capacity;
+            index = (index + 1) % capacity;
         } //when the loop is over, index is at the empty place that NextLast goes.
         nextFirst = newSize - 1;
         nextLast = size;

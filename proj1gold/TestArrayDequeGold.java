@@ -5,8 +5,6 @@ public class TestArrayDequeGold {
 
     @Test
     public void testArrayDeque() {
-        //Test addFirst()
-        System.out.println("Testing on addFirst...");
         StudentArrayDeque<Integer> sad = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> ads = new ArrayDequeSolution<>();
 

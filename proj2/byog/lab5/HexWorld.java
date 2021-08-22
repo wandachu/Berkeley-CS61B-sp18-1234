@@ -21,6 +21,9 @@ public class HexWorld {
         if (side < 2) {
             throw new IllegalArgumentException("Hexagon must be at least size 2");
         }
+        if(!isFullHex(p, side)) {
+            return;
+        }
         int xPos = p.getX();
         int yPos = p.getY();
         for (int a = yPos; a < yPos + side * 2; a++) {
@@ -91,7 +94,7 @@ public class HexWorld {
      * @return position of the right neighbor
      */
     private static Position getRightBottomNeighbor(Position curr, int side) {
-        int newX = curr.getX() + getNumElement(0, side) + 2 * getNumSpacePerSide(0, side) - 2;
+        int newX = curr.getX() + getNumElement(0, side) + getNumSpacePerSide(0, side) + 1;
         int newY = curr.getY() - side;
         return new Position(newX, newY);
     }
@@ -125,7 +128,7 @@ public class HexWorld {
      * Draw a vertical group of Hexes given a starting position at the right top
      */
     private static void drawRandomVerticalHexes(Position startP, int side, int n) {
-        while (n > 0) {
+        while (n > 0 && isFullHex(startP, side)) {
             TETile randomStyle = getRandomTile();
             addHexagon(side, startP, world, randomStyle);
             startP = getLeftNeighbor(startP, side);
@@ -142,7 +145,7 @@ public class HexWorld {
         if (isFullHex(bottom, side)) {
             return bottom;
         }
-        return null;
+        return curr;
     }
 
     public static void main(String[] args) {

@@ -64,10 +64,10 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new ARBIterator<T>();
+        return new ARBIterator();
     }
 
-    private class ARBIterator<T> implements Iterator<T> {
+    private class ARBIterator implements Iterator<T> {
         private int ptr;
 
         public ARBIterator() {
@@ -81,7 +81,7 @@ public class ArrayRingBuffer<T> extends AbstractBoundedQueue<T> {
 
         @Override
         public T next() {
-            T toReturn = (T) rb[ptr];
+            T toReturn = rb[ptr];
             ptr++;
             return toReturn;
         }

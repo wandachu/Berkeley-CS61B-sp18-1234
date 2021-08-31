@@ -145,7 +145,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        V value = get(key);
+        return remove(key, value);
     }
 
     /** Removes the key-value entry for the specified key only if it is

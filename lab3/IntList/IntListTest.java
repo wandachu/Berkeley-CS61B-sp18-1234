@@ -86,3 +86,5 @@ public class IntListTest {
       * example. */
 
 }
+
+//Check if the empty line will be recognized as new edits.
